@@ -105,7 +105,7 @@ const QUESTIONS = [
     prompt: 'Complétez avec le bon pronom : « Elle s’occupe de son jardin ? Oui, elle s’_____ occupe tous les week-ends. »',
     options: ['y', 'en'],
     answer: 'en',
-    explanation: 'Avec « s’occuper de », on emploie « en » et il se place après le pronom réfléchi : elle s’en occupe.'
+    explanation: 'Avec « s’occuper de », on emploie « en » et il se place après le pronom réfléchi : elle s’en occupe.',
   },
   {
     id: 15,
@@ -233,17 +233,17 @@ function Header({ started, score, currentIndex, total }) {
   const progress = started ? (currentIndex / total) * 100 : 0;
 
   return (
-    <div className="rounded-[24px] border border-white/15 bg-gradient-to-r from-slate-950 via-blue-950 to-sky-900 px-3.5 py-2.5 shadow-xl backdrop-blur md:px-4 md:py-3">
+    <div className="rounded-[24px] border border-white/15 bg-gradient-to-r from-slate-950 via-blue-950 to-sky-900 px-4 py-3 shadow-xl backdrop-blur md:px-5 md:py-3.5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex min-w-0 items-center gap-2.5">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 via-cyan-500 to-blue-700 text-white shadow-lg ring-1 ring-white/30 md:h-11 md:w-11">
-            <BookOpenText className="h-4.5 w-4.5 md:h-5 md:w-5" />
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 via-cyan-500 to-blue-700 text-white shadow-lg ring-1 ring-white/30 md:h-12 md:w-12">
+            <BookOpenText className="h-5 w-5 md:h-6 md:w-6" />
           </div>
           <div className="min-w-0">
-            <h1 className="text-xl font-black leading-tight tracking-tight text-white md:text-[28px]">
+            <h1 className="text-2xl font-black leading-tight tracking-tight text-white md:text-3xl">
               Les pronoms y et en
             </h1>
-            <p className="mt-1 max-w-2xl text-[10px] leading-relaxed text-white/80 md:text-[13px]">
+            <p className="mt-1 max-w-2xl text-[11px] leading-relaxed text-white/80 md:text-[14px]">
               Objectif : choisir correctement <strong>y</strong> et <strong>en</strong> et bien les placer dans la phrase.
             </p>
           </div>
@@ -404,7 +404,9 @@ function AnswersModal({ open, onClose, answers, questions }) {
               <div className="mx-auto mt-2 grid max-w-2xl gap-2 md:grid-cols-2">
                 <div className={`rounded-xl border p-2 text-center ${isCorrect ? 'border-emerald-200 bg-emerald-50' : 'border-rose-200 bg-rose-50'}`}>
                   <p className="text-[10px] font-black uppercase tracking-wide text-slate-500">Ta réponse</p>
-                  <p className={`mt-1 text-sm font-semibold ${isCorrect ? 'text-emerald-800' : 'text-rose-800'}`}>{userAnswer}</p>
+                  <p className={`mt-1 text-sm font-semibold ${isCorrect ? 'text-emerald-800' : 'text-rose-800'}`}>
+                    {userAnswer}
+                  </p>
                 </div>
                 <div className="rounded-xl border border-cyan-200 bg-cyan-50 p-2 text-center">
                   <p className="text-[10px] font-black uppercase tracking-wide text-slate-500">Bonne réponse</p>
@@ -484,7 +486,18 @@ function Home({ hasProgress, onStart, onResetProgress }) {
   );
 }
 
-function QuestionCard({ question, currentIndex, total, selected, feedback, onSelect, onNext, onPrevious, onGoHome, onOpenReminder }) {
+function QuestionCard({
+  question,
+  currentIndex,
+  total,
+  selected,
+  feedback,
+  onSelect,
+  onNext,
+  onPrevious,
+  onGoHome,
+  onOpenReminder,
+}) {
   return (
     <div className="rounded-[22px] border border-white/15 bg-gradient-to-br from-slate-950 via-blue-950 to-sky-900 p-3 shadow-xl md:p-3.5">
       <div className="flex items-center justify-between gap-2">
@@ -514,7 +527,8 @@ function QuestionCard({ question, currentIndex, total, selected, feedback, onSel
           const showCorrect = Boolean(feedback) && option === question.answer;
           const showWrong = Boolean(feedback) && isSelected && option !== question.answer;
 
-          let optionClassName = 'border-slate-200 bg-white text-slate-800 hover:-translate-y-0.5 hover:scale-[1.01] hover:border-cyan-300 hover:bg-slate-50';
+          let optionClassName =
+            'border-slate-200 bg-white text-slate-800 hover:-translate-y-0.5 hover:scale-[1.01] hover:border-cyan-300 hover:bg-slate-50';
 
           if (showCorrect) {
             optionClassName = 'border-emerald-300 bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-md';
@@ -646,7 +660,10 @@ export default function PronomsYEnApp() {
   const selected = currentQuestion ? answers[currentQuestion.id] ?? null : null;
 
   const score = useMemo(() => {
-    return shuffledQuestions.reduce((total, question) => (answers[question.id] === question.answer ? total + 1 : total), 0);
+    return shuffledQuestions.reduce(
+      (total, question) => (answers[question.id] === question.answer ? total + 1 : total),
+      0,
+    );
   }, [answers, shuffledQuestions]);
 
   const openQuestionAt = (index) => {
@@ -737,13 +754,23 @@ export default function PronomsYEnApp() {
         <Header started={started} score={score} currentIndex={currentIndex} total={shuffledQuestions.length} />
 
         <ReminderModal open={showReminder} onClose={() => setShowReminder(false)} />
-        <AnswersModal open={showAnswers} onClose={() => setShowAnswers(false)} answers={answers} questions={shuffledQuestions} />
+        <AnswersModal
+          open={showAnswers}
+          onClose={() => setShowAnswers(false)}
+          answers={answers}
+          questions={shuffledQuestions}
+        />
 
         <div className="mt-2 min-h-0 overflow-auto">
           {!started && !finished ? (
             <Home hasProgress={hasProgress} onStart={startGame} onResetProgress={resetGame} />
           ) : finished ? (
-            <ResultScreen score={score} total={shuffledQuestions.length} onGoHome={goHome} onOpenAnswers={() => setShowAnswers(true)} />
+            <ResultScreen
+              score={score}
+              total={shuffledQuestions.length}
+              onGoHome={goHome}
+              onOpenAnswers={() => setShowAnswers(true)}
+            />
           ) : (
             <QuestionCard
               question={currentQuestion}
